@@ -1,0 +1,21 @@
+node_modules/
+.pnpm-store/
+dist/
+.env
+.env.*
+!.env.example
+providers.local.json
+.local/
+.codex/
+.devin/
+.DS_Store
+coverage/
+*.log
+
+# Books, screenshots, and exported reading notes stay on this machine.
+pdf/
+*.[pP][dD][fF]
+*-notes.md
+screenshots/
+playwright-report/
+test-results/

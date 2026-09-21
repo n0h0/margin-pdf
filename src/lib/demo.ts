@@ -1,0 +1,10 @@
+import type { Explanation } from './schema';
+export const demo: Explanation = {
+  title: 'キャッシュは、よく使う答えの「近道」',
+  blocks: [
+    { type: 'markdown', content: 'これは**表示機能のサンプル**です。開いている PDF に対する AI の回答ではありません。\n\nキャッシュは、一度取得したデータを近くに置いておく仕組みです。毎回データベースへ問い合わせる代わりに、保存済みのデータをすぐ返せます。' },
+    { type: 'diagram', title: 'リクエストが届いてから', code: 'flowchart TD\n A["リクエスト"] --> B{"キャッシュにある？"}\n B -->|はい| C["すぐに返す"]\n B -->|いいえ| D["データベースから取得"]\n D --> E["キャッシュに保存"]\n E --> C', caption: 'キャッシュに見つかることを「ヒット」と呼びます。' },
+    { type: 'chart', title: 'ヒット率と平均応答時間', kind: 'line', xLabel: 'キャッシュヒット率（%）', yLabel: '平均応答時間（ms）', labels: ['0', '20', '40', '60', '80', '100'], series: [{ name: '平均応答時間', values: [100, 81, 62, 43, 24, 5] }], caption: '説明用の仮定値。ヒット時 5 ms、ミス時 100 ms とした単純モデルです。' },
+    { type: 'interactive', title: 'ヒット率を変えてみよう', html: `<style>.value{font-size:48px;font-weight:650;letter-spacing:-2px;color:#2b664b}.unit{font-size:15px;color:#788778;margin-left:6px}.result{padding:20px 0;text-align:center}.bar{height:10px;border-radius:8px;background:#e6ece2;overflow:hidden;margin:18px 0}.fill{height:100%;background:#568063;transition:width .15s}label{font-weight:600;margin-bottom:12px}.note{font-size:12px;color:#7b8577}</style><label for="rate">キャッシュヒット率 <span id="percent">80%</span></label><input id="rate" aria-label="キャッシュヒット率" type="range" min="0" max="100" value="80"><div class="result"><span class="value" id="latency">24</span><span class="unit">ms</span><div>平均応答時間</div></div><div class="bar"><div class="fill" id="fill" style="width:24%"></div></div><p class="note">平均応答時間 = ヒット率 × 5 + (1 − ヒット率) × 100<br>仮定値を用いたシミュレーションです。</p><script>const rate=document.getElementById('rate');rate.addEventListener('input',()=>{const value=100-0.95*Number(rate.value);document.getElementById('percent').textContent=rate.value+'%';document.getElementById('latency').textContent=Number(value.toFixed(1));document.getElementById('fill').style.width=value+'%';});</script>`, caption: 'スライダーを動かすと、平均応答時間が変わります。' },
+  ], followUps: [],
+};

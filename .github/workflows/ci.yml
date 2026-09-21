@@ -1,0 +1,37 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        with:
+          node-version: '24'
+          package-manager-cache: false
+      # Corepack verifies the exact pnpm version and SHA-512 in package.json.
+      - name: Verify pinned pnpm
+        run: corepack pnpm --version
+      - name: Install reviewed dependencies
+        run: corepack pnpm install --frozen-lockfile
+      - name: Verify registry signatures
+        run: corepack pnpm audit signatures
+      - name: Audit known vulnerabilities
+        run: corepack pnpm audit --audit-level=high
+      - run: corepack pnpm run check
+      - run: corepack pnpm test
+      - run: corepack pnpm run build
+      - name: Ensure installation did not change dependency policy
+        run: git diff --exit-code -- package.json pnpm-lock.yaml pnpm-workspace.yaml

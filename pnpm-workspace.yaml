@@ -1,0 +1,23 @@
+# Use reviewed, exact versions and reject incompatible tooling.
+saveExact: true
+registry: https://registry.npmjs.org/
+engineStrict: true
+pmOnFail: error
+verifyDepsBeforeRun: error
+
+# Apply the same policy even to versions already present in a lockfile.
+minimumReleaseAge: 10080 # 7 days, in minutes
+minimumReleaseAgeStrict: true
+minimumReleaseAgeIgnoreMissingTime: false
+trustPolicy: no-downgrade
+trustLockfile: false
+blockExoticSubdeps: true
+verifyStoreIntegrity: true
+sideEffectsCache: false
+
+# No dependency may execute an installation script. Unknown builds fail.
+# esbuild uses its platform-specific optional binary without postinstall.
+strictDepBuilds: true
+allowBuilds:
+  esbuild: false
+  fsevents: false
